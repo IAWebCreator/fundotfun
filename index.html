@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fundotfun - Meme Token</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFD93D;
+            --text-color: #333;
+            --background-color: #F7F7F7;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5em;
+            color: white;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .hero {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 150px 0 100px;
+        }
+
+        .hero h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .section {
+            padding: 100px 0;
+        }
+
+        .section h2 {
+            font-family: 'Bangers', cursive;
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+        }
+
+        .tokenomics-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tokenomics-list li {
+            background-color: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .tokenomics-list li:hover {
+            transform: translateY(-5px);
+        }
+
+        .how-to-buy-steps {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: calc(25% - 20px);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .step:hover {
+            transform: scale(1.05);
+        }
+
+        .step h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .roadmap {
+            position: relative;
+        }
+
+        .roadmap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+            transform: translateX(-50%);
+        }
+
+        .roadmap-item {
+            position: relative;
+            margin-bottom: 50px;
+            width: 50%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .roadmap-item:nth-child(odd) {
+            left: 0;
+            padding-right: 50px;
+        }
+
+        .roadmap-item:nth-child(even) {
+            left: 50%;
+            padding-left: 50px;
+        }
+
+        .roadmap-item:nth-child(odd)::before {
+            right: -10px;
+        }
+
+        .roadmap-item:nth-child(even)::before {
+            left: -10px;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5em;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3em;
+            }
+
+            .step {
+                width: calc(50% - 20px);
+            }
+
+            .roadmap-item {
+                width: 100%;
+                left: 0 !important;
+                padding: 20px !important;
+            }
+
+            .roadmap::before {
+                left: 20px;
+            }
+
+            .roadmap-item::before {
+                left: 11px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <header>
+        <div class="container">
+            <a href="#" class="logo">fundotfun</a>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#tokenomics">Tokenomics</a></li>
+                    <li><a href="#how-to-buy">How to Buy</a></li>
+                    <li><a href="#roadmap">Roadmap</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="floating">Welcome to the fundotfun Carnival!</h1>
+            <p>In the quirky world of fundotfun, your wallet gets a free ticket to the crypto carnival, where every giggle adds to your fortune!</p>
+            <a href="#" class="btn">Join the Fun!</a>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About fundotfun</h2>
+            <p>fundotfun is not just another meme token - it's a ticket to the most entertaining crypto carnival you've ever experienced! Our mission is to bring laughter, joy, and a dash of quirkiness to the world of digital assets. With fundotfun, every transaction is a ride, every holder is a carnival-goer, and every day is a celebration of fun in finance!</p>
+        </div>
+    </section>
+
+    <section id="tokenomics" class="section">
+        <div class="container">
+            <h2>Tokenomics</h2>
+            <ul class="tokenomics-list">
+                <li>Total Supply: 1,000,000,000,000 FUN tokens</li>
+                <li>5% of each transaction goes to the Giggle Vault for community events</li>
+                <li>3% of each transaction is automatically burned, increasing scarcity</li>
+                <li>2% of each transaction is redistributed to all holders, spreading the fun</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="how-to-buy" class="section">
+        <div class="container">
+            <h2>How to Buy</h2>
+            <div class="how-to-buy-steps">
+                <div class="step">
+                    <h3>Step 1</h3>
+                    <p>Get a Wallet - Download a reputable Ethereum wallet like MetaMask or Trust Wallet.</p>
+                </div>
+                <div class="step">
+                    <h3>Step 2</h3>
+                    <p>Acquire ETH - Purchase Ethereum (ETH) from a cryptocurrency exchange like Coinbase or Binance.</p>
+                </div>
+                <div class="step">
+                    <h3>Step 3</h3>
+                    <p>Connect to a DEX - Connect your wallet to a decentralized exchange (DEX) like Uniswap or SushiSwap.</p>
+                </div>
+                <div class="step">
+                    <h3>Step 4</h3>
+                    <p>Swap ETH for FUN - Use the DEX's swap feature to exchange your ETH for FUN tokens.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roadmap" class="section">
+        <div class="container">
+            <h2>Roadmap</h2>
+            <div class="roadmap">
+                <div class="roadmap-item">
+                    <h3>Phase 1: Launch & Laughter</h3>
+                    <p>We'll launch the token and focus on growing a community of fun-loving crypto enthusiasts.</p>
+                </div>
+                <div class="roadmap-item">
+                    <h3>Phase 2: Meme Magic & Partnerships</h3>
+                    <p>We'll ramp up our meme game and form strategic partnerships with other quirky projects.</p>
+                </div>
+                <div class="roadmap-item">
+                    <h3>Phase 3: Funnovation</h3>
+                    <p>We'll develop new features and utilities for the token, always keeping fun at the forefront.</p>
+                </div>
+                <div class="roadmap-item">
+                    <h3>Phase 4: Global Gigglefest</h3>
+                    <p>We'll expand our reach globally, bringing laughter and fun to crypto enthusiasts worldwide.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>fundotfun Token Address: 0x123...abc <i class="fas fa-copy"></i></p>
+            <div class="social-links">
+                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="#" target="_blank"><i class="fas fa-chart-line"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+                <a href="#" target="_blank"><i class="fas fa-search-dollar"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/babel">
+        // React component for the floating logo
+        const FloatingLogo = () => {
+            return (
+                <div className="floating-logo">
+                    <img src="./logo.png" alt="fundotfun logo" />
+                </div>
+            );
+        };
+
+        // Render the floating logo component
+        ReactDOM.render(<FloatingLogo />, document.getElementById('floating-logo-container'));
+
+        // Particles.js configuration
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+                modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+            },
